@@ -1,0 +1,26 @@
+<p class="lead">
+Your Order</p>
+<table class="table">
+<tr><td>{{order.cart.cartitem_set.count}}   item(s):<br/>{% for i in order.cart.cartitem_set.all %}
+<b>{{ i.item.get_title }}</b><br/>
+{% endfor %}
+</td></tr>
+<tr><td>Sub Total:{{order.cart.total}}</td></tr>
+<tr><td>Shipping:{{order.shipping_total_price}}</td></tr>
+<tr><td>Total:{{order.order_total}}</td></tr>
+	</table>
+</div>
+
+<div class="col-sm-4 col-sm-offset-4 text-center">
+<p><b> Billing to: </b>
+<br/>
+{{order.billing_address.get_address}}
+</p>
+<p><b> Shipping to: </b>
+<br/>
+{{order.shipping_address.get_address}}
+</p>
+<p><b> Mobile Number: </b>
+<br/>
+{{order.shipping_address.get_mobile_number}}
+</p>

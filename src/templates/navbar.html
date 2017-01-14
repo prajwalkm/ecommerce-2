@@ -1,0 +1,99 @@
+   {% load staticfiles %}
+
+   <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top" >
+      <div class="container ">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}"><img src='{% static "img/swlogo1.png" %}' style="height:45px;"  alt="SW"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'Products' %}">Shop</a></li>
+          <!--   <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>  -->
+             
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'categories' %}">All Categories</a></li>
+                <li><a href="{% url 'categories' %}analog">Analog</a></li>
+                <li><a href="{% url 'categories' %}digital">Digital</a></li>
+    
+                <li class="divider"></li>
+                <li class="dropdown-header">Gender</li>
+                <li><a href="{% url 'categories' %}mens">Guys</a></li>
+                <li><a href="{% url 'categories' %}girls">girls</a></li>
+              </ul>
+            </li>
+
+
+            <form class="navbar-form navbar-left" method="GET" role="search" >
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q">
+        </div>
+      </form>
+
+          </ul>
+
+
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href='{% url "carts" %}'><i class="fa fa-shopping-cart fa-navbar-cart" aria-hidden="true"></i><span id="cart-count-badge" class="badge">{{request.session.cart_item_count}}</span></a> 
+            </li>
+          {% if request.user.is_authenticated %}
+            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
+            {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+              <li class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li> -->
+                    
+            <form class='navbar-form ' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+              <div class='form-group'>
+                  <input type='text' class='form-control' name='username' placeholder='Username' /> 
+              </div>
+              <div class='form-group'>
+                  <input type='password' class='form-control' name='password' placeholder='Password' />
+              </div>
+
+              <button type='submit' class='btn btn-default btn-block'>Login</button>
+          </form>
+          <p class="text-center"><a href="{% url 'auth_password_reset' %}">Forgot Password?</a></p>
+          
+              </ul>
+            </li>
+                {% endif %}
+            {% endif %}
+          </ul>
+
+         <!--  {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+            <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+              <div class='form-group'>
+                  <input type='text' class='form-control' name='username' placeholder='Username' /> 
+              </div>
+              <div class='form-group'>
+                  <input type='password' class='form-control' name='password' placeholder='Password' />
+              </div>
+              <button type='submit' class='btn btn-default'>Login</button>
+          </form>
+          {% endif %} -->
+
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>

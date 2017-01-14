@@ -1,0 +1,85 @@
+{% extends "base.html"  %}
+
+
+
+
+
+{% load staticfiles %}
+
+{%block content%}
+<div>
+	<table class="table table-bordered" >
+<tr class="active"><th>ALL PRODUCTS |<a href="{% url 'Products'%}"> CATEGORIES</a> | {{ object }}</th></tr>
+</table>
+<hr style="color:black;size:2px">
+<br/>
+</div>
+<div class="row">
+	<div class="col-sm-3"><div>
+		<h3 class="text-center">CATEGORIES</h3>
+	   <table class="table " >
+        <tr class="active">
+        	<td><div class="well well-sm"> <a href="{% url 'categories' %}guys">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/man.png" %}' style="height:65px;"  alt="SW"><br/><h5 class="text-center">GUYS</h5></a></div></td>
+        	<td><div class="well well-sm"><a href="{% url 'categories' %}girls">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/girl.png" %}' style="height:65px;"  alt="SW"><br/><h5 class="text-center">GIRLS</h5></a></div></td></tr>
+        <tr class="active">
+        	<td><div class="well well-sm"><a href="{% url 'categories' %}analog">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/analog.png" %}' style="height:65px;"  alt="SW"><br/><h5 class="text-center">ANALOG</h5></a></div></td>
+        	<td><div class="well well-sm"><a href="{% url 'categories' %}digital">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/digital.png" %}' style="height:65px;"  alt="SW"><br/><h5 class="text-center">DIGITAL</h5></a></div></td></tr>
+        <tr class="active">
+        	<td><div class="well well-sm"><a href="{% url 'categories' %}chronograph">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/crono.png" %}' style="height:65px;"  alt="SW"><br/><h6 class="text-center">CHRONOGRAPH</h6></a></div></td>
+        	<td><div class="well well-sm"><a href="{% url 'categories' %}others">&nbsp;&nbsp;&nbsp;&nbsp;<img src='{% static "img/others.png" %}' style="height:65px;"  alt="SW"><br/><h5 class="text-center">OTHERS</h5></a></div></td></tr>
+			</table>
+			<hr style="color:black;size:2px">
+				<br/>
+			</div>
+
+<h4>SHARE</h4>
+<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+</a>	
+
+</hr>
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+
+
+ </div>
+<div class="col-sm-2 ">
+	<br/>
+	&nbsp;<br/>	&nbsp;
+<div class="container">
+ {% for product in products %}
+
+ <div class="row">
+		 <div class="col-xs-2">
+		         {% include "products/product_thumbnail.html" with product=product price="True" %}
+		  </div>
+		    {% cycle '' '' ''  '</div><div class="container"><div class="row">' %}
+
+
+
+
+      {% endfor %}
+ </div>
+</div>
+</div>
+
+</div>
+{% endblock %}

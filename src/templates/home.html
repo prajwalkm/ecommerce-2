@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
+{% block head_title %}Welcome | {{ block.super }}{% endblock %}
+
+<style>
+{% block style %}
+.navbar-static-top {
+	margin-bottom: 0px !important;
+}
+
+.jumbotron {
+	background-color:#3498db;
+	color: #FFF;
+}
+
+.carousel{
+    background: #2f4357;
+    margin-top: 20px;
+}
+.carousel .item img{
+    margin: 0 auto; /* Align slide image horizontally center */
+}
+.bs-example{
+	margin: 0px;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+{% endblock %}
+</style>
+
+
+
+     
+{% block jumbotron %}
+
+
+<!-- <div class="jumbotron">
+ <div class="container">
+	<div class="row">
+		<div class='col-sm-6'>
+		<h1>Try Django 1.8</h1>
+		<p>The MVP Landing project is designed to get your project started. The goal is to help you launch as soon as possible with the least amount of investment using time or money. Join Us today.</p>
+		<p>
+		<a class="btn btn-lg btn-primary" href="" role="button">Join Us &raquo;</a>
+		</p>
+		</div>
+		<div class='col-sm-6' >
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/2uLYO1LUf6Q" frameborder="0" allowfullscreen></iframe>
+
+ 		</div>
+		</div>
+	</div>
+ </div> -->
+
+<div class="bs-example">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>   
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner">
+        	  
+              <div class="item active">
+                <img src='{{featured_image1.image.url}}' alt="First Slide">
+                	<div class="carousel-caption" {% if featured_image1.text_right %}style="text-align:right;" {% else %}style="text-align:left;" {% endif %} >
+	        			<h3 style="color:black; "class="animated  fadeIn"> {{featured_image1.title}}</h3>
+	        			<h1 style="color:black; font-size:50px; "class="animated  fadeIn"><b>{{featured_image1.description}}</b></h1>
+
+	        			<p class="animated fadeIn">{{featured_image1.text}}</p>
+	        			<p>
+							<a class="btn btn-lg btn-primary" href="{% url 'Products' %}" role="button">Shop Now &raquo;</a>
+						</p>
+      				</div>
+            </div>
+ 
+            {% for image in featured_image %}
+            <div class="item">
+                <img src='{{image.image.url }}' alt="First Slide">
+                	<div class="carousel-caption" {% if image.text_right %}style="text-align:right;" {% else %}style="text-align:left;" {% endif %}>
+                		<h3 style="color:black; "class="animated  fadeIn"> {{image.title}}</h3>
+	        			<h1 style="color:black; font-size:50px; "class="animated   fadeIn"><b>{{image.description}}</b></h1>
+
+	        			<p class="animated  fadeIn" >{{image.text}}</p>
+	        			<p>
+							<a class="btn btn-lg btn-primary" href="{% url 'Products' %}" role="button">Shop Now &raquo;</a>
+						</p>
+      				</div>
+            </div>
+            {% endfor %}
+            <!-- <div class="item">
+                <img src='{% static "img/full.png" %}' alt="Second Slide">
+                <div class="carousel-caption">
+	        			<h1></h1>
+	        			<p></p>
+	        			<p>
+							<a class="btn btn-lg btn-primary" href="{% url 'Products' %}" role="button">Shop Now &raquo;</a>
+						</p>
+      				</div>
+            </div>
+            <div class="item">
+                <img src='{% static "img/full3.png" %}' alt="Third Slide">
+                <div class="carousel-caption">
+	        			<h1>Flors</h1>
+	        			<p>Beatiful flowers in Kolymbari, Crete.</p>
+	        			<p>
+							<a class="btn btn-lg btn-primary" href="{% url 'categories' %}" role="button">Shop Now &raquo;</a>
+						</p>
+      				</div>
+            </div> -->
+        </div>
+        <!-- Carousel controls -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <!-- <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> -->
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+           <!--  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> -->
+        </a>
+    </div>
+</div>
+
+
+
+
+
+
+
+ 
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block content %}
+
+
+
+<!-- <div class="row">
+<h3>Recommended Products</h3>
+<hr>
+{% include "products/products.html" with object_list=products   col_class_set="col-sm-2" %}
+
+</div>
+<br/>
+<div class="row">
+<h3>Featured Products</h3>
+<hr>
+<br/>
+{% include "products/products.html" with object_list=products2   col_class_set="col-sm-3" %}
+
+</div> -->
+
+
+
+
+
+ <!-- {% if request.user.is_authenticated %}
+<h1>You are logged in!</h1>
+
+	{% if queryset %}
+	<h2>Welcome Staff</h2>
+	<table class='table'>
+	{% for instance in queryset %}
+		<tr><td>{{ forloop.counter }}</td><td>{{ instance.email }}</td><td>{{ instance.full_name }}</td><td>{{ instance.timestamp|timesince }} ago</td></tr>
+		{% if instance.email == "abc@gmail.edu" %}
+		<tr><td>is equal</td></tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+
+	{% endif %}
+
+ {% else %}
+<div class="row">
+
+  <div class="col-sm-3 pull-right">
+  	
+			<p class='lead text-align-center'>{{ title }}</p>
+
+			<form method='POST' action=''>{% csrf_token %}
+			{{ form|crispy }}
+
+			<input class='btn btn-primary' type='submit' value='Sign Up' />
+
+			</form>
+	</div>
+
+	<div class='col-sm-3'>
+<p class='lead text-align-center'>Django &amp; Bootstrap</p>
+			<img src='{% static "img/marketing1.jpg" %}' class='img-responsive' />
+</div>
+
+<div class='col-sm-3'>
+<p class='lead text-align-center'>Created for Starters 
+<br/>
+<span class='fa-stack fa-lg fa-5x'>
+<i class='fa fa-comment-o fa-stack-2x'></i>
+<i style='color:yellow;' class="fa fa-bolt fa-stack-1x"></i>
+
+</span>
+</p>
+
+</div>
+
+<div class='col-sm-3'>
+<p class='lead text-align-center'>Always Open Source <br/><br/>
+
+<span class="fa-stack fa-lg fa-5x">
+<i class="fa fa-circle-o-notch fa-stack-2x"></i>
+  <!-- <i class="fa fa-square-o fa-stack-2x"></i> -->
+  <!-- <i class="fa fa-github fa-stack-1x"></i> -->
+<!-- </span>
+</p>
+
+
+</div>
+
+
+</div> -->
+{% endif %} -->
+
+{% endblock %}

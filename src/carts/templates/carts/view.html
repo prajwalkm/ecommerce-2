@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+
+
+<script>
+{% block jquery %}
+
+$(".item-qty").change(function(){
+	<!-- $(this).next(".btn-update").fadeIn(); -->
+	<!-- event.preventDefault(); -->
+      var item=$(this).prev("input[type='hidden']").val();
+      var qty=$(this).val()
+      var data={
+      		item:item,
+      		qty:qty,
+  		}
+      console.log(data);
+
+      $.ajax({
+        type:"GET",
+        url:"{% url 'carts' %}",
+        data:data,
+        success:function(data){
+          console.log(data)
+          $("#jquery-message").text("addded "+data.item_added+" deleted "+data.deleted)
+          if(data.deleted){
+          		$("#item-"+item).fadeOut();
+              $("#subtotal").text("subtotal:"+data.subtotal);
+              $("#taxtotal").text("tax(%approx):"+data.taxtotal);
+                      $("#total").text("total:"+data.total);
+                showFlashMessage(data.flash_message);
+                updateCartItemCount()
+
+
+                }else{
+
+                    $("#item-line-total-"+item).text(data.line_total);
+                    $("#subtotal").text("subtotal:"+data.subtotal);
+                    $("#taxtotal").text("tax(%approx):"+data.taxtotal);
+                      $("#total").text("total:"+data.total);
+                     
+                    showFlashMessage(data.flash_message);
+                    updateCartItemCount()
+                }
+
+               
+                
+        },
+        error: function(response,error){
+          // console.log(response)
+          // console.log(error)
+          $("#add-form").submit()
+
+
+        }
+
+
+      })
+
+});
+
+{% endblock %}
+</script>
+
+
+
+
+
+
+{% block content %}
+
+<div class="row main-content">
+
+{% if object.cartitem_set.count < 1 %}
+
+{% include "carts/empty_cart.html" %}
+{% else %}
+<div class="col-sm-8 col-sm-offset-2">
+<h1>Your Cart</h1>
+<table class='table'>
+
+{% for item in object.cartitem_set.all  %}
+<tr id='item-{{item.item.id}}'> 
+	
+	<td>{{item.item.get_title}}</td>
+	
+
+    <td><form action="." method="GET"><input type="hidden" name="item" value="{{item.item.id}}"/><input type="number"  class=' item-qty' name="qty" value="{{item.quantity}}"/><input type="submit" class=" btn-update btn btn-link" value="update item" style="display:none;"/> </form></td>
+    <td id="item-line-total-{{item.item.id}}"> {{item.line_item_total}}</td>
+    <td class="text-right"><a href="{{item.remove}}" />X</a></td>
+   
+
+</tr>
+{% endfor %}
+
+<tr>
+<td id="subtotal" colspan="4" class="text-right">SubTotal:{{object.subtotal}} </td>
+</tr>
+
+<tr>
+<td id="taxtotal" colspan="4" class="text-right">Tax:{{object.taxtotal}} </td>
+</tr>
+<tr>
+<td id="total" colspan="4" class="text-right">Total:{{object.total}} </td>
+</tr>
+<tr>
+<td id="total" colspan="4" class="text-right"><a class="btn btn-warning" href="{% url 'checkout' %}"> Checkout</a></td>
+</tr>
+</table>
+</div>
+
+{% endif %}
+</div>
+
+{% endblock %}

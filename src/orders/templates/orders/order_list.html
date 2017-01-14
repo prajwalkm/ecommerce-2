@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-sm-6 col-sm-offset-3">
+<h1>Orders</h1>
+<table class="table">
+<tr>
+<th>order_id</th><th>Title</th><th>Status</th>
+</tr>
+{% for object in object_list %}
+
+<tr>
+<td><a href="{{ object.get_absolute_url }}">view#{{object.id}}</a></td>
+<!-- {{object.cart.cartitem_set.item.get_title}} -->
+<td>{{ object.cart.items.all }}</td>
+<td>{{object.status}}</td>
+</tr>
+{%  endfor %}
+</table>
+</div>
+{% endblock %}

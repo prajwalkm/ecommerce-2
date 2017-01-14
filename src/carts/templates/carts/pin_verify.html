@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+
+<script>
+{% block jquery %}
+
+function send_pin() {
+    $.ajax({
+                url: "{% url 'ajax_send_pin' %}",
+                type: "POST",
+                data: { mobile_number:  $("#mobile_number").val() },
+            })
+            .done(function(data) {
+                alert("PIN sent via SMS!");
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown + ' : ' + jqXHR.responseText);
+            });
+}
+
+
+{% endblock %}
+</script>
+
+
+{% block content %}
+
+<input type="text" id="mobile_number" name="mobile_number" value="{{order.shipping_address.get_mobile_number}}" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+{% endblock %}

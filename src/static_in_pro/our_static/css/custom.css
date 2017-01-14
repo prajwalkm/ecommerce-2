@@ -1,0 +1,43 @@
+.text-align-center {
+	text-align: center;
+}
+
+
+
+.zoomin img {
+  height: 200px;
+  width: 200px;
+  -webkit-transition: all 2s ease;
+     -moz-transition: all 2s ease;
+      -ms-transition: all 2s ease;
+          transition: all 2s ease;
+}
+.zoomin img:hover {
+  width: 300px;
+  height: 300px;
+}
+
+.og_price
+{
+
+	color:red;
+	text-decoration:line-through;
+}
+
+.fa-navbar-cart
+{
+font-size: 18px;
+vertical-align: middle;
+
+}
+
+.container-alert-flash{
+
+  position:absolute;
+  top: 10px;
+  z-index: 50000;
+  width: 100%;
+  right: 0%;
+  margin: 0px;
+  display: none;
+}

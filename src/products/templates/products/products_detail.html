@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+
+
+
+ <script>
+ 
+    
+ {% block jquery %}
+  	function setprice(){
+        var price=$(".variation_select option:selected").attr("data-price")
+
+    	$("#price").text(price)
+
+    	var sale_price=$(".variation_select option:selected").attr("data-sale-price")
+    	if (sale_price !="" && sale_price !="None" && sale_price!=null){
+    		$("#price").html("<h3>"+sale_price+'₹'+'  '+ "<small  style='color:red;text-decoration:line-through;'>"+price+" ₹</small> </h3>")
+
+    	}
+    	else{
+    		$("#price").html(price)
+    	}
+
+  	}
+  	setprice()
+
+ 	var price=$(".variation_select option:selected").attr("data-price")
+
+    $("#price").text(price)
+    
+    $(".variation_select").change(function(){
+
+
+    setprice()
+
+    })
+
+
+
+
+
+
+    $("#submit-btn").click(function(event){
+      event.preventDefault();
+      var formData=$("#add-form").serialize();
+      console.log(formData);
+
+      $.ajax({
+        type:"GET",
+        url:"{% url 'carts' %}",
+        data:formData,
+        success:function(data){
+          
+           showFlashMessage(data.flash_message);
+           updateCartItemCount()
+        },
+        error: function(response,error){
+          // console.log(response)
+          // console.log(error)
+          $("#add-form").submit()
+
+
+        }
+
+
+      })
+
+
+    });
+
+
+
+ {% endblock %}
+
+</script>
+
+
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="row">
+
+<div class="col-sm-8">
+<table class="table table-bordered" >
+  <tr class="active">
+    <td>
+<h2>{{object.fancy_title}}</h2>
+</td>
+</tr>
+</table>
+<hr/>
+
+
+{% if object.get_image_url %}
+<div class="col-sm-6 " >
+
+<img id='img' class='img-responsive img-rounded' src='{{object.get_image_url}}' />
+
+</div>	
+{% endif %}
+
+<div class="col-sm-6">
+<!-- <h2>Data sheet </h2> -->
+
+<form id="add-form" method='GET' action="{% url 'carts' %}">   
+<p id="jquery-message" class="lead">
+
+</p>                                    
+    {% if object.variation_set.count > 1 %}
+      <h3 id="price" >{{object.variation_set.first.price}}</h3>
+
+    <select name='item' class="form-control variation_select">
+      {%for vari_obj in object.variation_set.all %}
+      <option  data-sale-price="{{vari_obj.sale_price}}" data-price="{{vari_obj.price}}" value="{{vari_obj.id}}">{{vari_obj}}</option>
+      {% endfor %}
+      </select>
+
+    {% else %}
+        <input type="hidden" name='item' value='{{ object.variation_set.first.id }}' />
+          <h3 id="price" >{% if object.variation_set.first.sale_price %}   
+          {{ object.variation_set.first.sale_price }}Rs &nbsp;
+          <small  style="color:red; text-decoration:line-through;">{{ object.variation_set.first.price }} Rs</small> 
+          {% else %}
+          {{object.variation_set.first.price}}₹
+          {% endif %}
+        </h3>
+
+
+    {% endif %}
+    <br/>
+    <input class="form-control" type="number" name="qty" value="1" />
+</br>
+<input id="submit-btn" type="submit" value="add to cart" class="btn btn-primary" style="color:#34495e"; >
+</form>
+
+
+&nbsp;
+
+
+<table class="table table-bordered">
+  <tr><td>SKU:</td><td>{{object.title}}</td></tr>
+   <tr><td> Gender</td> <td>{{object.gender}}</td></tr>
+   <tr><td> Color:</td> <td>{{object.color}}</td></tr>
+</table>
+
+    <!-- <h2>Descriptions:</h2> -->
+<!-- <p class="lead">
+
+{{object.description}}
+</p> -->
+</div>
+
+
+</div>
+
+<!--product sidebar here-->
+<div class="col-sm-4">
+&nbsp;
+<hr/>  
+<!--  <hr/>           
+<form id="add-form" method='GET' action="{% url 'carts' %}">   
+<p id="jquery-message" class="lead">
+
+</p>                                    
+    {% if object.variation_set.count > 1 %}
+      <h3 id="price" >{{object.variation_set.first.price}}</h3>
+
+    <select name='item' class="form-control variation_select">
+      {%for vari_obj in object.variation_set.all %}
+      <option  data-sale-price="{{vari_obj.sale_price}}" data-price="{{vari_obj.price}}" value="{{vari_obj.id}}">{{vari_obj}}</option>
+      {% endfor %}
+      </select>
+
+    {% else %}
+        <input type="hidden" name='item' value='{{ object.variation_set.first.id }}' />
+          <h3 id="price" >{% if object.variation_set.first.sale_price %}   
+          {{ object.variation_set.first.sale_price }}Rs &nbsp;
+          <small  style="color:red; text-decoration:line-through;">{{ object.variation_set.first.price }} Rs</small> 
+          {% else %}
+          {{object.variation_set.first.price}}₹
+          {% endif %}
+        </h3>
+
+
+    {% endif %}
+    <br/>
+    <input class="form-control" type="number" name="qty" value="1" />
+</br>
+<input id="submit-btn" type="submit" value="add to cart" class="btn btn-primary" style="color:#34495e"; >
+</form> -->
+<hr/>
+<!--social share goes here-->
+<h4>SHARE</h4>
+<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
+</a>
+
+<a href="#">
+	<i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+</a>	
+
+</hr>
+<h4>RELATED PRODUCTS</h4>
+<div class="row">
+
+{% for product in related %}
+<div class="col-xs-4">
+         {% include "products/product_thumbnail.html" with product=product price="True" %}
+       </div>
+        {% cycle '' '</div><div class="row">' %}
+
+              {% endfor %}
+
+   </div>
+</div>
+<!--end of product side bar-->
+
+</div>
+{% endblock %}

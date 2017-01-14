@@ -1,0 +1,6 @@
+include/
+lib/
+bin/
+webfaction/
+static_in_env/
+scripts/

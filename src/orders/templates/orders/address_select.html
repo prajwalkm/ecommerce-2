@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="col-sm-4 col-sm-offset-4 text-center">
+	<p class="lead"> Select your address for this order</p>
+	<hr/>
+<form method="POST" action="">{% csrf_token %}
+
+{{form|crispy}}
+<input class="btn btn-info" type="submit" value="select" >
+</form>
+<hr/>
+<h3>--OR--</h3>
+<p>
+ <a class="btn btn-info" href="{% url 'user_address_create' %}">Add new address</a>
+</p>
+</div>
+{% endblock %}

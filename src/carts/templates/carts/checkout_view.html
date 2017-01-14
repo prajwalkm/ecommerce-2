@@ -1,0 +1,82 @@
+{%  extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+
+<script>
+{% block jquery %}
+
+function send_pin() {
+    $.ajax({
+                url: "{% url 'ajax_send_pin' %}",
+                type: "POST",
+                data: { mobile_number:  $("#mobile_number").val() },
+            })
+            .done(function(data) {
+                alert("PIN sent via SMS!");
+                console.log(data)
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown + ' : ' + jqXHR.responseText);
+                console.log(data)
+            });
+}
+
+
+{% endblock %}
+</script>
+
+
+
+
+{% block content %}
+
+
+
+
+{% if not user_can_continue %}
+<div class="col-sm-6">
+<p class="lead"> Continue as Guest</p>
+
+<form method='POST' action=' '>{% csrf_token %}
+{{ form|crispy }}
+<input type="submit" class="btn btn-success" value="continue as guest"/>
+</form>
+
+</div>
+
+
+<div class="col-sm-6">
+	<p class="lead"> Login to Continue </p>
+<form method="POST" action="{% url 'auth_login' %}">{% csrf_token %}
+{{login_form|crispy}}
+<input type="hidden" name="next" value="{{next_url}}" />
+<input type="submit" class="btn btn-success" value="Login">
+</form>
+
+<p class="text-center">
+<p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
+</p>
+</div>
+	
+{% else %}
+
+<div class="col-sm-4 col-sm-offset-4 text-center">
+{% include 'orders/order_summary_short.html' with order=order %}
+<p>
+ <a href="{% url 'order_address' %}">change an address</a>
+</p>
+<hr/>
+
+<form method="POST" action="{% url 'checkout_final' %}">{% csrf_token %}
+<!-- <input type="hidden" name="mobile_number" value=ABC /> -->
+<input type="hidden" name='payment_token' value="ABC" />
+
+<p><button type="submit">Complete Order</button></p>
+</form>
+</div>
+
+
+{% endif %}
+{%  endblock %}
